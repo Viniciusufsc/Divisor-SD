@@ -94,7 +94,7 @@ zero_vec <= (others=>'0');
 um_vec <= (others=>'1');
 soma_um <= (others=>'0');
 soma_um(0) <= '1';
-divMAG <= zero_vec & outDIV;
+-- divMAG <= zero_vec & outDIV;
 -- Sinais dos componentes
 entDIV <= DIVISOR & compDIV;
 saiCOMPARADOR <= outCOMP(2);
@@ -104,9 +104,9 @@ outREM <= saiREM;
 muxREM: mux2para1 generic map(n) port map(DIVIDENDO, entMUX, selMUX, saiMUX);
 div: registrador_sh_r generic map(2*n) port map(clk, cargaDIV, zero, shDIV, entDIV, outDIV); -- DIVISOR
 quociente: registrador_sh generic map(n) port map(clk, cargaQUO, outCOMP(2), shQUO, zero_vec, outQUO); -- QUOCIENTE
-resto: registrador generic map(2*n) port map(clk, cargaREM, saiMUX, saiREM); -- DIVIDENDO
+resto: registrador generic map(n) port map(clk, cargaREM, saiMUX, saiREM); -- DIVIDENDO
 sub: subtrator generic map(n) port map(saiREM, outDIV(n-1 downto 0), entMUX);
-mag: comparador_magnitude generic map(2*n) port map(divMAG, saiREM, outCOMP);
+mag: comparador_magnitude generic map(2*n) port map(outDIV, saiREM, outCOMP); -- Alterado
 -- Contador
 muxCONT: mux2para1 generic map(j+1) port map(zero_vec, saiSOMA, selMUX, entCont);
 contador: registrador generic map(j+1) port map(clk, cargaCONT, entCont, saiCont);
